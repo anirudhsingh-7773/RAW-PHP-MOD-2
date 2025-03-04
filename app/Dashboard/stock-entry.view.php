@@ -2,13 +2,12 @@
 require_once '../app/db/Stocks.php';
 $stocks = new Stocks();
 
-// Get all stocks.
-$table = $stocks->getAllStocks();
-
-// Check if the id is set, and delete the stock.
+// Stores the stocks in an array.
+$table = $stocks->getStockByUser($_SESSION['user']);
+// Deletes the stock, if the id is set.
 if (isset($_GET['id'])) {
   $stocks->deleteStock($_GET['id']);
-  header('Location: /home');
+  header('Location: /stock-entry');
   exit();
 }
 ?>
@@ -19,21 +18,8 @@ if (isset($_GET['id'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
+  <title>Stock Portfolio</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    header {
-      display: flex;
-      justify-content: end;
-      background-color: black;
-      width: 100%;
-    }
-
     a {
       display: inline-block;
       padding: 0.5rem 1rem;
@@ -47,10 +33,12 @@ if (isset($_GET['id'])) {
 </head>
 
 <body>
-  <header>
-    <a href="/logout">Logout</a>
-  </header>
-  <h1>Stocks</h1>
+  <form action="/stock-entry" method="post">
+    <input type="text" name="stock_name" placeholder="Stock Name">
+    <input type="text" name="stock_price" placeholder="Stock Price">
+    <button type="submit">Add Stock</button>
+  </form>
+
   <table border="1">
     <tr>
       <th>ID</th>
@@ -60,6 +48,7 @@ if (isset($_GET['id'])) {
       <th>Last Updated</th>
       <th>Actions</th>
     </tr>
+    <!-- Loop to display stock table. -->
     <?php foreach ($table as $stock): ?>
       <tr>
         <td><?php echo htmlspecialchars($stock['id']); ?></td>
@@ -68,10 +57,12 @@ if (isset($_GET['id'])) {
         <td><?php echo htmlspecialchars($stock['created_on']); ?></td>
         <td><?php echo htmlspecialchars($stock['last_updated']); ?></td>
         <td>
-          <!-- Show Delete button if logged in user has added the stock. -->
-          <?php if ($stock['created_by'] == $_SESSION['user']) { ?>
-            <a href="?id=<?php echo htmlspecialchars($stock['id']); ?>">Delete</a>
-          <?php } ?>
+          <!-- Delete button -->
+          <a href="?id=<?php echo htmlspecialchars($stock['id']); ?>">Delete</a>
+        </td>
+        <td>
+          <!-- Edit button -->
+          <a href="/edit?id=<?php echo htmlspecialchars($stock['id']); ?>">Edit</a>
         </td>
       </tr>
     <?php endforeach; ?>

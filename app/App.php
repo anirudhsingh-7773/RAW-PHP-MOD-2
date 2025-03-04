@@ -36,6 +36,10 @@ class App {
     
     // Set the file path.
     $filepath = "../app/php/" . ucfirst($URL[0]) . ".php";
+    // Check if the URL is stock-entry.
+    if ($URL[0] == "stock-entry") {
+      $filepath = "../app/php/StockEntry.php";
+    }
 
     // Check if the URL length is greater than 1.
     if (count($URL) > 1) {
