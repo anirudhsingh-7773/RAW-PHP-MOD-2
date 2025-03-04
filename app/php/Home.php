@@ -26,4 +26,3 @@ if (!isset($_SESSION['user'])) {
   $home = new Home();
   $home->view();  
 }
-
