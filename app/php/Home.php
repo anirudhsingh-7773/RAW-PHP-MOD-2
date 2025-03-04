@@ -19,7 +19,7 @@ class Home {
 
 // If session doesn't exist, send to login page.
 // Else, display the home page.
-if (!$_SESSION['user']) {
+if (!isset($_SESSION['user'])) {
   header('Location: /login');
   exit();
 } else {

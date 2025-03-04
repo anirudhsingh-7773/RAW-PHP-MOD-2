@@ -85,7 +85,7 @@ class Login {
 }
 
 // Checks if session exists, if true then send to home.
-if  ($_SESSION['user']) {
+if  (isset($_SESSION['user'])) {
   header('Location: /');
   exit();
 }

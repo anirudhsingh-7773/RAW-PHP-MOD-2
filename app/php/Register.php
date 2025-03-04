@@ -38,11 +38,27 @@ class Register {
     $this->dbConnect();
     // Hash the password.
     $password = password_hash($password, PASSWORD_DEFAULT);
-    $sql = "INSERT INTO user_table (user_name, password) VALUES (?, ?)";
+      $sql = "INSERT INTO user_table (user_name, password) VALUES (?, ?)";
+      $stmt = $this->conn->prepare($sql);
+      $stmt->bind_param("ss", $username, $password);
+      $stmt->execute();
+      $stmt->close();
+  }
+
+  public function userExists($username) {
+    // Connect to the database.
+    $this->dbConnect();
+    $sql = "SELECT * FROM user_table WHERE user_name = ?";
     $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param("ss", $username, $password);
+    $stmt->bind_param("s", $username);
     $stmt->execute();
+    $result = $stmt->get_result();
+    $exists = 0;
+    if ($result->num_rows > 0) {
+      $exists = 1;
+    }
     $stmt->close();
+    return $exists;
   }
 
   /**
@@ -54,7 +70,7 @@ class Register {
 }
 
 // Check if the user is logged in, if yes, send to home.
-if ($_SESSION['user']) {
+if (isset($_SESSION['user'])) {
   header('Location: /');
   exit();
 }
@@ -69,11 +85,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $username = htmlspecialchars($_POST['username']);
   $password = htmlspecialchars($_POST['password']);
 
-  // Register the user.
-  $register->register($username, $password);
-  // Redirect to the login page.
-  header('Location: /login');
-  exit();
+  // Register the user if username doesn't exists.
+  if ($register->userExists($username)) {
+    echo "<script>
+    alert('Username already exists.');
+    setTimeout(function() {
+        window.location.href = '/register';
+    }, 500);
+    </script>";
+  } 
+  else {
+    $register->register($username, $password);
+    // Redirect to the login page.
+    header('Location: /login');
+    exit();
+  }
 } else {
   $register->view();
 }
