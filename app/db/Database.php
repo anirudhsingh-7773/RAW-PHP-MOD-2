@@ -1,24 +1,49 @@
 <?php
 
+// Require the database configuration file.
 require_once '../app/db/config.php';
+
+/**
+ * class Database
+ * 
+ * Handles the database connection.
+ */
 class Database {
-    private $conn;
 
-    public function __construct() {
-        $this->connect();
-    }
+  /**
+   * Database connection
+   * @var 
+   */
+  private $conn;
 
-    private function connect() {
-      try {
-        $this->conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-      } catch (Exception $e) {
-          echo "<script>alert('" . $e->getMessage() . "');</script>";
-          exit;
-      }
-    }
+  /**
+   * Constructor, connect to the database.
+   */
+  public function __construct() {
+      $this->connect();
+  }
 
-    public function getConnection() {
-        return $this->conn;
+  /**
+   * Connect to the database
+   */
+  private function connect() {
+    // Handling errors.
+    try {
+      // Create a new connection.
+      $this->conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    } catch (Exception $e) {
+        echo "<script>alert('" . $e->getMessage() . "');</script>";
+        exit;
     }
+  }
+
+  /**
+   * Get the connection
+   * 
+   * @return 
+   */
+  public function getConnection() {
+    return $this->conn;
+  }
 }
 

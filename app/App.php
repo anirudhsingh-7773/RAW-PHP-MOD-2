@@ -14,6 +14,7 @@ class App {
    */
   private function splitURL() {
     // Get the 'url' parameter from the query string.
+    // If not set, default is 'Home'.
     $URL = $_GET['url'] ?? 'Home';
 
     // Remove leading slashes.
@@ -25,7 +26,7 @@ class App {
   }
 
   /**
-   * Loads the required method based on URL.
+   * Loads the required php file based on URL.
    * 
    * @return void
    */
@@ -33,16 +34,20 @@ class App {
     // Gets the URL array.
     $URL = $this->splitURL();
     
+    // Set the file path.
     $filepath = "../app/php/" . ucfirst($URL[0]) . ".php";
 
     // Check if the URL length is greater than 1.
     if (count($URL) > 1) {
+      // Show 404 page.
       require_once "../app/Dashboard/404.php";
     } // check if the file exists.
     else if (file_exists($filepath)) {
-       require_once $filepath;
+      // Loads the required file.
+      require_once $filepath;
     } 
     else {
+      // Show 404 page.
       require_once "../app/Dashboard/404.php";
     }
   }
