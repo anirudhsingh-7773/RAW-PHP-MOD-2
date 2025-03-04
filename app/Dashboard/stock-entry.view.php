@@ -20,6 +20,19 @@ if (isset($_GET['id'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stock Portfolio</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    header {
+      display: flex;
+      justify-content: end;
+      background-color: black;
+      width: 100%;
+    }
+
     a {
       display: inline-block;
       padding: 0.5rem 1rem;
@@ -28,17 +41,34 @@ if (isset($_GET['id'])) {
       font-size: 1.5rem;
       color: white;
       height: auto;
+      margin: 0.5rem;
     }
+
+    input {
+      padding: 0.5rem;
+      margin: 0.5rem;
+    }
+
+    
   </style>
 </head>
 
 <body>
+  <header>
+    <a href="/">Home</a>
+    <a href="/stock-entry">Add Stocks</a>
+    <a href="/logout">Logout</a>
+  </header>
+
+  <!-- Form to add stock. -->
+  <h2>Add Stock</h2>
   <form action="/stock-entry" method="post">
     <input type="text" name="stock_name" placeholder="Stock Name">
     <input type="text" name="stock_price" placeholder="Stock Price">
-    <button type="submit">Add Stock</button>
+    <input type="submit" value="Add Stock"></input>
   </form>
 
+  <h2>Your Stocks:</h2>
   <table border="1">
     <tr>
       <th>ID</th>

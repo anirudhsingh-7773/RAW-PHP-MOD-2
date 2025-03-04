@@ -42,12 +42,15 @@ if (isset($_GET['id'])) {
       font-size: 1.5rem;
       color: white;
       height: auto;
+      margin: 0.5rem;
     }
   </style>
 </head>
 
 <body>
   <header>
+    <a href="/">Home</a>
+    <a href="/stock-entry">Add Stocks</a>
     <a href="/logout">Logout</a>
   </header>
   <h1>Stocks</h1>
